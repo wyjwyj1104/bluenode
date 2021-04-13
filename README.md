@@ -2,8 +2,7 @@
 
 ## Introduction
 
-`VendingMachineSim` is a sample Java application that implements the business logic for operating a simple vending machine.
-* Note: All error handling are placed with error code 500 internal server error for consistency.
+`bluenode` is a sample Python application that implements the data processing logic as guided from the INSTRUCTIONS.md.
 * Start date: 202104120912
 * V0: 202104120945 Project setup.
 * V1: 202104121152 Simulation tested.
