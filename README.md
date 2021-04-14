@@ -5,7 +5,9 @@
 `bluenode` is a sample Python application that implements the data processing logic as guided from the INSTRUCTIONS.md.
 * Start date: 202104120912
 * V0: 202104120945 Project setup.
-* V1: 202104121152 Simulation tested.
+* V1: 202104121152 User tested.
+* V2: 202104132050 Backup.
+* V3: 202104132133 User/Unit testing.
 
 
 ## Source

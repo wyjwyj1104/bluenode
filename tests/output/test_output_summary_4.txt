@@ -1,0 +1,6 @@
+L41 field under section L4 fails the data type (expected: word_characters) validation, however it passes the max length (1) validation
+L42 field under section L4 is missing.
+L11 field under section L1 is missing.
+L12 field under section L1 is missing.
+L13 field under section L1 is missing.
+L31 field under section L3 fails all the validation criteria.

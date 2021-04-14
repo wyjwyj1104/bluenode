@@ -1,5 +1,6 @@
 import os
 import json
+import sys
 
 class StandardDefinitionItem:
     def __init__(self, data_type, max_length):
@@ -51,6 +52,18 @@ class StandardDefinition:
         self.__report_file_path = os.getcwd() + "/report.csv"
         self.__report_summary = None
         self.__report_summary_file_path = os.getcwd() + "/summary.txt"
+
+    def getReportFilePath(self):
+        return self.__report_file_path
+
+    def getReportSummaryFilePath(self):
+        return self.__report_summary_file_path
+
+    def getErrorCodes(self):
+        return self.__error_codes
+
+    def getStandardDefinitions(self):
+        return self.__standard_definitions
 
     def loadErrorCodes(self, file_path):
         """
@@ -215,63 +228,64 @@ class StandardDefinition:
         """
         if line_length > 0:
             section_key = line[0]
-            section = self.__standard_definitions[section_key]
-            seciton_len = len(section)
+            if len(section_key) > 0 and section_key in self.__standard_definitions.keys():
+                section = self.__standard_definitions[section_key]
+                seciton_len = len(section)
 
-            sub_section = None
-            expected_data_type = None
-            expected_max_length = None
-            same_type = False
-            for count in range(0, seciton_len):
-                # Reset data values
-                given_data = None
-                given_data_type = None
-                given_data_len = 0
-                error_code = None
-                error_message = None
-                sub_section_key = section_key + str(count+1)
-                sub_section = section[sub_section_key]
-                expected_data_type = sub_section.getDataType()
-                expected_max_length = sub_section.getMaxLength()
-                if count+1 < line_length:
-                    given_data = line[count+1]
-                    if given_data:
-                        given_data_type = "digits" if self.check_int(given_data) else "word_characters" if isinstance(given_data, str) else "others"
-                    given_data_len = len(given_data)
-                    if given_data_type == expected_data_type:
-                        same_type = True
+                sub_section = None
+                expected_data_type = None
+                expected_max_length = None
+                same_type = False
+                for count in range(0, seciton_len):
+                    # Reset data values
+                    given_data = None
+                    given_data_type = None
+                    given_data_len = 0
+                    error_code = None
+                    error_message = None
+                    sub_section_key = section_key + str(count+1)
+                    sub_section = section[sub_section_key]
+                    expected_data_type = sub_section.getDataType()
+                    expected_max_length = sub_section.getMaxLength()
+                    if count+1 < line_length:
+                        given_data = line[count+1]
+                        if given_data:
+                            given_data_type = "digits" if self.check_int(given_data) else "word_characters" if isinstance(given_data, str) else "others"
+                        given_data_len = len(given_data)
+                        if given_data_type == expected_data_type:
+                            same_type = True
 
-                if line_length-1 < seciton_len:
-                    # "message_template": "LXY field under section LX is missing."
-                    error_code = "E05"
-                    error_message = self.__error_codes[error_code]
-                elif given_data_len <= 0:
-                    # "message_template": "LXY field under section LX fails all the validation criteria."
-                    error_code = "E04"
-                    error_message = self.__error_codes[error_code]
+                    if line_length-1 < seciton_len:
+                        # "message_template": "LXY field under section LX is missing."
+                        error_code = "E05"
+                        error_message = self.__error_codes[error_code]
+                    elif given_data_len <= 0:
+                        # "message_template": "LXY field under section LX fails all the validation criteria."
+                        error_code = "E04"
+                        error_message = self.__error_codes[error_code]
 
-                if given_data_len > expected_max_length:
-                    # "message_template": "LXY field under section LX fails the max length (expected: {data_type}) validation, however it passes the data type ({data_type}) validation"
-                    error_code = "E03"
-                    if same_type:
-                        error_message = self.__error_codes[error_code].format(expected_max_length=expected_max_length, given_data_type=given_data_type)
-                elif given_data_len != 0:
-                    if not same_type:
-                        # "message_template": "LXY field under section LX fails the data type (expected: {data_type}) validation, however it passes the max length ({max_length}) validation"
-                        error_code = "E02"
-                        error_message = self.__error_codes[error_code].format(data_type=expected_data_type, max_length=expected_max_length)
+                    if given_data_len > expected_max_length:
+                        # "message_template": "LXY field under section LX fails the max length (expected: {data_type}) validation, however it passes the data type ({data_type}) validation"
+                        error_code = "E03"
+                        if same_type:
+                            error_message = self.__error_codes[error_code].format(expected_max_length=expected_max_length, given_data_type=given_data_type)
+                    elif given_data_len != 0:
+                        if not same_type:
+                            # "message_template": "LXY field under section LX fails the data type (expected: {data_type}) validation, however it passes the max length ({max_length}) validation"
+                            error_code = "E02"
+                            error_message = self.__error_codes[error_code].format(data_type=expected_data_type, max_length=expected_max_length)
 
-                if not error_code and not error_message:
-                    error_code = "E01"
-                    error_message = self.__error_codes[error_code]
+                    if not error_code and not error_message:
+                        error_code = "E01"
+                        error_message = self.__error_codes[error_code]
 
-                # Write to report.csv
-                report_line = self.generate_report_line(section_key, sub_section_key, given_data_type, expected_data_type, given_data_len, expected_max_length, error_code)
-                self.write_report(report_line)
+                    # Write to report.csv
+                    report_line = self.generate_report_line(section_key, sub_section_key, given_data_type, expected_data_type, given_data_len, expected_max_length, error_code)
+                    self.write_report(report_line)
 
-                # Write to summary.txt
-                summary_line = self.generate_summary_line(section_key, sub_section_key, error_message)
-                self.write_summary(summary_line)
+                    # Write to summary.txt
+                    summary_line = self.generate_summary_line(section_key, sub_section_key, error_message)
+                    self.write_summary(summary_line)
 
 def loadFileP(file_path):
     """
@@ -291,7 +305,7 @@ def loadFileP(file_path):
     except IOError:
         raise Exception('ERROR::IOERROR')
 
-def main(standard_definition):
+def main(standard_definition, input_file_name="input_file.txt"):
     """
     Application main function.
 
@@ -304,7 +318,7 @@ def main(standard_definition):
                                 from init function
     """
 
-    input_file_path = os.getcwd() + "/input_file.txt"
+    input_file_path = os.getcwd() + '/' + input_file_name
     input_file = loadFileP(input_file_path)
     for line in input_file:
         parsed_line = line.strip().split("&")
@@ -340,4 +354,10 @@ if __name__ == "__main__":
     process the data with system logic, output and generates proper report and
     summary data on to the files, report.csv and summary.txt.
     """
-    main(init())
+    if len(sys.argv) > 1:
+        print("len(sys.argv):"+str(len(sys.argv)))
+        print("sys.argv:"+str(sys.argv))
+        print("sys.argv[1]:"+sys.argv[1])
+        main(init(), sys.argv[1])
+    else:
+        main(init())
