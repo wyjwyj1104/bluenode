@@ -51,9 +51,9 @@ $ pytest
 - [X] Task 2: Loading initial testing data.
 - [X] Task 3: Planning expecting output and work flow.
 - [X] Task 4: Implementation.
-- [X] Task 4-1: Unit tests.
-- [X] Task 5: Main processing logic.
-- [X] Task 6: Cleaning and refactoring with comments.
-- [X] Task 7: User testing.
+- [X] Task 5: Unit tests.
+- [X] Task 6: Main processing logic.
+- [X] Task 7: Cleaning and refactoring with comments.
+- [X] Task 8: User testing.
 - [X] Task 9: Review and upload.
 ```
