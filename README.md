@@ -18,6 +18,7 @@ Exercise link:
 ## Prerequisite
 
 * [Python 3](https://www.python.org/download/releases/3.0/) Required to install Python 3.
+* [Pytest](https://docs.pytest.org/en/stable/getting-started.html) Required for testing.
 
 
 ## Setup and running the app
@@ -25,6 +26,13 @@ Exercise link:
 ```
 $ cd <PROJECT_DIR>/bluenode
 $ python3 main.py
+```
+
+## Dev Testing
+
+```
+$ cd <PROJECT_DIR>/bluenode
+$ pytest
 ```
 
 ## Test
