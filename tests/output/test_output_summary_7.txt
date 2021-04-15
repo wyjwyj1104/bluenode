@@ -1,0 +1,1 @@
+L31 field under section L3 fails the data type (expected: word_characters) validation, however it passes the max length (1) validation

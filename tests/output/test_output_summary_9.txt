@@ -1,0 +1,3 @@
+L21 field under section L2 fails all the validation criteria.
+L22 field under segment L2 passes all the validation criteria.
+L23 field under section L2 fails all the validation criteria.

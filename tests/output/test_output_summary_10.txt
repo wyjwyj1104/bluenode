@@ -1,0 +1,3 @@
+L21 field under section L2 fails the max length (expected: 1) validation, however it passes the data type (word_characters) validation
+L22 field under segment L2 passes all the validation criteria.
+L23 field under section L2 fails the data type (expected: word_characters) validation, however it passes the max length (2) validation

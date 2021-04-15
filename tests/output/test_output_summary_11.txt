@@ -1,0 +1,5 @@
+L51 field under section L5 fails the data type (expected: digits) validation, however it passes the max length (100) validation
+L52 field under section L5 fails all the validation criteria.
+L53 field under section L5 fails all the validation criteria.
+L54 field under section L5 fails all the validation criteria.
+L55 field under segment L5 passes all the validation criteria.

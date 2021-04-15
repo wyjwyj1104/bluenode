@@ -1,0 +1,2 @@
+L41 field under section L4 fails all the validation criteria.
+L42 field under segment L4 passes all the validation criteria.

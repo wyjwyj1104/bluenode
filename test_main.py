@@ -19,7 +19,8 @@ def data():
         "L1":{ "L11":None, "L12":None, "L13":None },
         "L2":{ "L21":None, "L22":None },
         "L3":{ "L31":None },
-        "L4":{ "L41":None, "L42":None }
+        "L4":{ "L41":None, "L42":None },
+        "L5":{ "L51":None, "L52":None, "L53":None, "L54":None, "L55":None }
         }
 
 class TestStandardDefinitionItem():

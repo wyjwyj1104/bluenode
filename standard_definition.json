@@ -63,5 +63,35 @@
         "max_length": 6
       }
     ]
-  }
+  },
+  {
+      "key": "L5",
+      "sub_sections": [
+      {
+          "key": "L51",
+          "data_type": "digits",
+          "max_length": 100
+      },
+      {
+          "key": "L52",
+          "data_type": "digits",
+          "max_length": 1
+      },
+      {
+          "key": "L53",
+          "data_type": "word_characters",
+          "max_length": 1
+      },
+      {
+          "key": "L54",
+          "data_type": "word_characters",
+          "max_length": 3
+      },
+      {
+          "key": "L55",
+          "data_type": "digits",
+          "max_length": 3
+      }
+      ]
+    }
 ]

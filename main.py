@@ -188,6 +188,15 @@ class StandardDefinition:
         if self.__report_summary:
             self.__report_summary.close()
 
+    def has_numbers(self, val):
+        """
+        Validation function to check if a string contains a number character.
+
+        :param val: String value to validate with.
+        :return Boolean: Returns True/False of the validation.
+        """
+        return any(char.isdigit() for char in val)
+
     def check_int(self, val):
         """
         Validation function to check if a string value can be converted into
@@ -235,14 +244,14 @@ class StandardDefinition:
                 sub_section = None
                 expected_data_type = None
                 expected_max_length = None
-                same_type = False
                 for count in range(0, seciton_len):
                     # Reset data values
                     given_data = None
                     given_data_type = None
+                    same_type = False
                     given_data_len = 0
-                    error_code = None
-                    error_message = None
+                    error_code = "E01"
+                    error_message = self.__error_codes[error_code]
                     sub_section_key = section_key + str(count+1)
                     sub_section = section[sub_section_key]
                     expected_data_type = sub_section.getDataType()
@@ -250,16 +259,17 @@ class StandardDefinition:
                     if count+1 < line_length:
                         given_data = line[count+1]
                         if given_data:
-                            given_data_type = "digits" if self.check_int(given_data) else "word_characters" if isinstance(given_data, str) else "others"
+                            given_data_type = "digits" if self.check_int(given_data) else "word_characters" if isinstance(given_data, str) and given_data.isalpha() and not self.has_numbers(given_data)  else "others"
                         given_data_len = len(given_data)
                         if given_data_type == expected_data_type:
                             same_type = True
-
                     if line_length-1 < seciton_len:
                         # "message_template": "LXY field under section LX is missing."
                         error_code = "E05"
                         error_message = self.__error_codes[error_code]
-                    elif given_data_len <= 0:
+
+
+                    if given_data_len <= 0 or not same_type or given_data_len != expected_max_length:
                         # "message_template": "LXY field under section LX fails all the validation criteria."
                         error_code = "E04"
                         error_message = self.__error_codes[error_code]
@@ -275,9 +285,6 @@ class StandardDefinition:
                             error_code = "E02"
                             error_message = self.__error_codes[error_code].format(data_type=expected_data_type, max_length=expected_max_length)
 
-                    if not error_code and not error_message:
-                        error_code = "E01"
-                        error_message = self.__error_codes[error_code]
 
                     # Write to report.csv
                     report_line = self.generate_report_line(section_key, sub_section_key, given_data_type, expected_data_type, given_data_len, expected_max_length, error_code)
