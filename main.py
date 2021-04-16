@@ -248,7 +248,8 @@ class StandardDefinition:
                     # Reset data values
                     given_data = None
                     given_data_type = None
-                    same_type = False
+                    type_validation = False
+                    length_validation = False
                     given_data_len = 0
                     error_code = "E01"
                     error_message = self.__error_codes[error_code]
@@ -262,29 +263,30 @@ class StandardDefinition:
                             given_data_type = "digits" if self.check_int(given_data) else "word_characters" if isinstance(given_data, str) and given_data.isalpha() and not self.has_numbers(given_data)  else "others"
                         given_data_len = len(given_data)
                         if given_data_type == expected_data_type:
-                            same_type = True
-                    if line_length-1 < seciton_len:
+                            type_validation = True
+
+                    if given_data_len > 0 and given_data_len <= expected_max_length:
+                        length_validation = True
+                    if not given_data:
                         # "message_template": "LXY field under section LX is missing."
                         error_code = "E05"
                         error_message = self.__error_codes[error_code]
+                    else:
+                        if not length_validation and not type_validation:
+                            # "message_template": "LXY field under section LX fails all the validation criteria."
+                            error_code = "E04"
+                            error_message = self.__error_codes[error_code]
 
-
-                    if given_data_len <= 0 or not same_type or given_data_len != expected_max_length:
-                        # "message_template": "LXY field under section LX fails all the validation criteria."
-                        error_code = "E04"
-                        error_message = self.__error_codes[error_code]
-
-                    if given_data_len > expected_max_length:
-                        # "message_template": "LXY field under section LX fails the max length (expected: {data_type}) validation, however it passes the data type ({data_type}) validation"
-                        error_code = "E03"
-                        if same_type:
-                            error_message = self.__error_codes[error_code].format(expected_max_length=expected_max_length, given_data_type=given_data_type)
-                    elif given_data_len != 0:
-                        if not same_type:
+                    if length_validation:
+                        if not type_validation:
                             # "message_template": "LXY field under section LX fails the data type (expected: {data_type}) validation, however it passes the max length ({max_length}) validation"
                             error_code = "E02"
                             error_message = self.__error_codes[error_code].format(data_type=expected_data_type, max_length=expected_max_length)
-
+                    else:
+                        if type_validation:
+                            # "message_template": "LXY field under section LX fails the max length (expected: {data_type}) validation, however it passes the data type ({data_type}) validation"
+                            error_code = "E03"
+                            error_message = self.__error_codes[error_code].format(expected_max_length=expected_max_length, given_data_type=given_data_type)
 
                     # Write to report.csv
                     report_line = self.generate_report_line(section_key, sub_section_key, given_data_type, expected_data_type, given_data_len, expected_max_length, error_code)

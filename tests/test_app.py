@@ -7,7 +7,7 @@ import filecmp
 
 @pytest.fixture
 def data():
-    pytest.NUM_TEST_INPUT = 4
+    pytest.NUM_TEST_INPUT = 10
 
 class TestApp():
     def test_app(self, data):

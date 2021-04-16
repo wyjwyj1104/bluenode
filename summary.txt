@@ -1,3 +1,8 @@
-L11 field under section L1 fails all the validation criteria.
-L12 field under section L1 fails all the validation criteria.
-L13 field under section L1 fails all the validation criteria.
+L11 field under segment L1 passes all the validation criteria.
+L12 field under segment L1 passes all the validation criteria.
+L13 field under section L1 is missing.
+L51 field under segment L5 passes all the validation criteria.
+L52 field under section L5 fails the max length (expected: 1) validation, however it passes the data type (digits) validation
+L53 field under section L5 is missing.
+L54 field under section L5 is missing.
+L55 field under section L5 is missing.
