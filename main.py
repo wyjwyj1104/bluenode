@@ -253,7 +253,7 @@ class StandardDefinition:
                     error_code = "E01"
                     error_message = self.__error_codes[error_code]
                     sub_section_key = k
-                    sub_section = section[sub_section_key]
+                    sub_section = v
                     expected_data_type = sub_section.getDataType()
                     expected_max_length = sub_section.getMaxLength()
                     if count+1 < line_length:
