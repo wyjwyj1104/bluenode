@@ -363,9 +363,6 @@ if __name__ == "__main__":
     summary data on to the files, report.csv and summary.txt.
     """
     if len(sys.argv) > 1:
-        print("len(sys.argv):"+str(len(sys.argv)))
-        print("sys.argv:"+str(sys.argv))
-        print("sys.argv[1]:"+sys.argv[1])
         main(init(), sys.argv[1])
     else:
         main(init())
