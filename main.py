@@ -240,11 +240,10 @@ class StandardDefinition:
             if len(section_key) > 0 and section_key in self.__standard_definitions.keys():
                 section = self.__standard_definitions[section_key]
                 seciton_len = len(section)
-
                 sub_section = None
                 expected_data_type = None
                 expected_max_length = None
-                for count in range(0, seciton_len):
+                for count, (k, v) in enumerate(section.items()):
                     # Reset data values
                     given_data = None
                     given_data_type = None
@@ -253,7 +252,7 @@ class StandardDefinition:
                     given_data_len = 0
                     error_code = "E01"
                     error_message = self.__error_codes[error_code]
-                    sub_section_key = section_key + str(count+1)
+                    sub_section_key = k
                     sub_section = section[sub_section_key]
                     expected_data_type = sub_section.getDataType()
                     expected_max_length = sub_section.getMaxLength()
